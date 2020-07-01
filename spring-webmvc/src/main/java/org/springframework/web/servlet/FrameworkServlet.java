@@ -568,6 +568,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			wac = this.webApplicationContext;
 			if (wac instanceof ConfigurableWebApplicationContext) {
 				ConfigurableWebApplicationContext cwac = (ConfigurableWebApplicationContext) wac;
+				//判断ApplicationContest是否已加载激活，若否则加载
 				if (!cwac.isActive()) {
 					// The context has not yet been refreshed -> provide services such as
 					// setting the parent context, setting the application context id, etc
@@ -576,6 +577,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 						// the root application context (if any; may be null) as the parent
 						cwac.setParent(rootContext);
 					}
+					//加载Spring容器并将DispatcherServlet当做事件注入到Spring中
 					configureAndRefreshWebApplicationContext(cwac);
 				}
 			}
@@ -597,6 +599,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			// support or the context injected at construction time had already been
 			// refreshed -> trigger initial onRefresh manually here.
 			synchronized (this.onRefreshMonitor) {
+				//DispatcherServlet入口
 				onRefresh(wac);
 			}
 		}
